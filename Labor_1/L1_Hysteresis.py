@@ -17,10 +17,10 @@ from grove.gpio import GPIO
 #import grovepi
 
 # ----------- global constant -----------
-POT_PIN = 2  # Connect the Grove Rotary Angle Sensor to analog port A0 of GrovePi-Board
-PROX_PIN = 16  # Connect inductive proximity sensor to digital port D2 of GrovePi-Board
+POT_PIN = 2  # Connect the Grove Rotary Angle Sensor to analog port A2 of GrovePi-Board
+PROX_PIN = 16  # Connect inductive proximity sensor to digital port D16 of GrovePi-Board
 ADC_REF = 3.3  # Reference voltage of ADC (which is built-in the Grove BaseHat) is 3.3 V
-ADC_RES = 4095  # The ADC on the GrovePi-Board has a resolution of 10 bit -> 1024 different digital levels in range of 0-1023
+ADC_RES = 4095  # The ADC on the GrovePi-Board has a resolution of 12 bit -> 4096 different digital levels in range of 0-4095
 
 # -------------------- Klassen und Funktionen --------------------
 adc = ADC() # Create ADC Object once

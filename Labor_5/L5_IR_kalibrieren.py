@@ -1,14 +1,11 @@
 """-----------------------------------------------------
 ¦    File name: L5_IR_kalibrieren.py                    ¦
 ¦    Version: 1.1                                       ¦
-¦    Authors:                                           ¦
-¦       Jonas Josi                                      ¦
-¦       Matthias Lang                                   ¦
-¦       Christian Hohmann                               ¦
-¦       Joschka Maters                                  ¦
+¦    Authors: Jonas Josi                                ¦
+¦             Joschka Maters                            ¦
 ¦    Date created: 2024/05/15                           ¦
-¦    Last modified: 2024/10/06                          ¦
-¦    Python Version: 3.11.2                             ¦
+¦    Last modified: 2026/04/24                          ¦
+¦    Python Version: 3.7.3                              ¦
 ------------------------------------------------------"""
 
 # ----------- import external Python module -----------

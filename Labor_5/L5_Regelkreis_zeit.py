@@ -1,14 +1,10 @@
 """-----------------------------------------------------
 ¦    File name: L5_Regelkreis_zeit.py                   ¦
-¦    Version: 1.1                                       ¦
-¦    Authors:                                           ¦
-¦       Jonas Josi                                      ¦
-¦       Matthias Lang                                   ¦
-¦       Christian Hohmann                               ¦
-¦       Joschka Maters                                  ¦
+¦    Version: 1.0                                       ¦
+¦    Author: Jonas Josi                                 ¦
 ¦    Date created: 2024/05/15                           ¦
-¦    Last modified: 2024/10/06                          ¦
-¦    Python Version: 3.11.2                             ¦
+¦    Last modified: 2026/04/24                          ¦
+¦    Python Version: 3.7.3                              ¦
 ------------------------------------------------------"""
 
 # ----------- import external Python module -----------
@@ -24,24 +20,22 @@ import time
 """ Settings """
 k = 0.001  # *** CHANGE ME *** controller amplification factor k [s/mm]
 N_MEASUREMENTS = 10  # *** CHANGE ME *** number of distance measurements [] over which to average
-VOLTAGE = 9  # *** CHANGE ME *** voltage for DC motor [V] between 0 und 12 V (Voltage from power supply is always 12 V)
-
-# results-file parameters
+VOLTAGE = 12  # *** CHANGE ME *** voltage for DC motor [V] between 0 und 12 V (Voltage from power supply is always 12 V)
 CSV_FILENAME = "Wegdiagramm_Zeit.csv"  # *** CHANGE ME *** file to log data (timestamp and distance)
 CSV_DELIMITER = ";"  # *** CHANGE ME *** Character to separate data fields / cells in the CSV file
 
-# assign Grove BaseHat Ports
 IR_SENSOR = 2  # Connect the Grove 80cm Infrared Proximity Sensor to analog port A2
 
 # assign motor driver interface to GPIO's of Raspberry Pi
-M3 = 6        # M3 on Motor screw terminal
-M4 = 13       # M4 on Motor screw terminal 
-PWMB = 12     # GPIO to be pulsed
+IN1 = 17    # IN1 on Motor screw terminal
+IN2 = 18    # IN2 on Motor screw terminal
+ENA = 12    # ENA - PWM for speed control (Enable A)
 
 # analog-digital-converter parameters
 adc = ADC()
-ADC_REF = 3.3  # Reference voltage of ADC (which is built-in the GrovePi-Board) is 5 V
-ADC_RES = 4095  # The ADC on the GrovePi-Board has a resolution of 10 bit -> 1024 different digital levels in range of 0-1023
+
+ADC_REF = 3.3  # Reference voltage of ADC (which is built-in the GrovePi-Board) is 3.3 V
+ADC_RES = 4095  # The ADC on the GrovePi-Board has a resolution of 12 bit -> 4096 different digital levels in range of 0-4095
 
 # auxiliary parameters
 MAX_VOLTAGE = 12  # supply voltage of motor driver is 12 V (which equals the max. rated voltage of the DC motor)
@@ -55,11 +49,11 @@ def stop_motor():
     Then disable the motor driver output pins (M1, M2).
     """
     # set state of motor driver outputs (M1 and M2) to low (0 V)
-    lgpio.gpio_write(gpio0, M3, 0)
-    lgpio.gpio_write(gpio0, M4, 0)
+    lgpio.gpio_write(gpio0, IN1, 0)
+    lgpio.gpio_write(gpio0, IN2, 0)
 
     # disable motor driver by setting PWM duty cycle to 0%
-    lgpio.tx_pwm(gpio0, PWMB, PWM_FREQUENCY, 0)
+    lgpio.tx_pwm(gpio0, ENA, PWM_FREQUENCY, 0)
 
     print("\nMotor stopped")
 
@@ -166,14 +160,14 @@ if __name__ == "__main__":
     gpio0 = lgpio.gpiochip_open(0)  # Open GPIO chip 0
 
     # Configure GPIO pins as outputs
-    lgpio.gpio_claim_output(gpio0, M3)
-    lgpio.gpio_claim_output(gpio0, M4) 
-    lgpio.gpio_claim_output(gpio0, PWMB)
+    lgpio.gpio_claim_output(gpio0, IN1)
+    lgpio.gpio_claim_output(gpio0, IN2) 
+    lgpio.gpio_claim_output(gpio0, ENA)
     
     # Initialize all pins to safe state
-    lgpio.gpio_write(gpio0, M3, 0)
-    lgpio.gpio_write(gpio0, M4, 0)
-    lgpio.tx_pwm(gpio0, PWMB, PWM_FREQUENCY, 0)  # PWM at 0% initially
+    lgpio.gpio_write(gpio0, IN1, 0)
+    lgpio.gpio_write(gpio0, IN2, 0)
+    lgpio.tx_pwm(gpio0, ENA, PWM_FREQUENCY, 0)  # PWM at 0% initially
 
     # Ask user for the Set-distance
     valid_userinput = False
@@ -230,7 +224,7 @@ if __name__ == "__main__":
             average_voltage = sum_voltage / N_MEASUREMENTS
 
             # Calculate distance using sensor characteristics, coefficients found from calibration (L5_IR_kalibrieren.py)
-            distance = round(634.24 * average_voltage * average_voltage - 545.7 * average_voltage + 142.5, 2)
+            distance = round(36.411 * average_voltage * average_voltage - 135.1 * average_voltage + 78.088, 2)
 
             if start_timestamp:
                 time_elapsed = round(time.time() - start_timestamp, 3)
@@ -257,24 +251,24 @@ if __name__ == "__main__":
 
             # drive motor with constant speed/voltage for calculated drivetime
             if direction == 0:
-                 # set direction: M3 HIGH, M4 LOW
-                lgpio.gpio_write(gpio0, M3, 1)
-                lgpio.gpio_write(gpio0, M4, 0)
+                 # set direction: IN1 HIGH, IN2 LOW
+                lgpio.gpio_write(gpio0, IN1, 1)
+                lgpio.gpio_write(gpio0, IN2, 0)
                 # set PWM signal 
-                lgpio.tx_pwm(gpio0, PWMB, PWM_FREQUENCY, PWM_DUTYCYCLE)
+                lgpio.tx_pwm(gpio0, ENA, PWM_FREQUENCY, PWM_DUTYCYCLE)
             elif direction == 1:
-                 # set direction: M3 HIGH, M4 LOW
-                lgpio.gpio_write(gpio0, M3, 0)
-                lgpio.gpio_write(gpio0, M4, 1)
+                 # set direction: IN1 HIGH, IN2 LOW
+                lgpio.gpio_write(gpio0, IN1, 0)
+                lgpio.gpio_write(gpio0, IN2, 1)
                 # set PWM signal 
-                lgpio.tx_pwm(gpio0, PWMB, PWM_FREQUENCY, PWM_DUTYCYCLE)
+                lgpio.tx_pwm(gpio0, ENA, PWM_FREQUENCY, PWM_DUTYCYCLE)
             time.sleep(drivetime)
         except KeyboardInterrupt:
             stop_motor()
             # Free GPIO pins
-            lgpio.gpio_free(gpio0, M3)
-            lgpio.gpio_free(gpio0, M4)
-            lgpio.gpio_free(gpio0, PWMB)
+            lgpio.gpio_free(gpio0, IN1)
+            lgpio.gpio_free(gpio0, IN2)
+            lgpio.gpio_free(gpio0, ENA)
             lgpio.gpiochip_close(gpio0)  # Close the GPIO chip connection
             print("\n " + "*" * 5 + f" Measurement stopped. Data saved to Log-File: {filename} " + "*" * 5 + "\n ")
             print("Exit Python")

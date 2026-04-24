@@ -203,3 +203,8 @@ LX_Testcode/Test_Claude_1.py
 LX_Testcode/Test.py
 LX_Testcode/test.py
 LX_Testcode/ultrasonic_test.py
+LX_Testcode/DRV8825.py
+LX_Testcode/test_wavesharestepperhat.py
+LX_Testcode/Test_Stepper_head.py
+LX_Testcode/L4_DCmotor_rpm_test.py
+LX_Testcode/L4_Stepmotor_RPM_Test.py

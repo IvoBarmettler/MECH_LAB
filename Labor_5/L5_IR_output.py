@@ -1,14 +1,11 @@
 """-----------------------------------------------------
 ¦    File name: L5_IR_ouput.py                          ¦
-¦    Version: 1.1                                       ¦
-¦    Authors:                                           ¦
-¦       Jonas Josi                                      ¦
-¦       Matthias Lang                                   ¦
-¦       Christian Hohmann                               ¦
-¦       Joschka Maters                                  ¦
+¦    Version: 1.0                                       ¦
+¦    Author: Jonas Josi                                 ¦
+¦            Joschka Maters                             ¦
 ¦    Date created: 2024/05/15                           ¦
-¦    Last modified: 2024/10/06                          ¦
-¦    Python Version: 3.11.2                             ¦
+¦    Last modified: 2026/04/24                          ¦
+¦    Python Version: 3.7.3                              ¦
 ------------------------------------------------------"""
 
 # ----------- import external Python module -----------
@@ -22,8 +19,8 @@ IR_SENSOR = 2  # Connect the Grove 80cm Infrared Proximity Sensor to analog port
 N_MEASUREMENTS = 200  # number of measurements (of ir sensor) to make, before calculating the average value
 MESUREMENT_INTERVAL = 0.5  # interval time in [s] between two measurements
 
-ADC_REF = 3.3  # Reference voltage of ADC (which is built-in the GrovePi-Board) is 5 V
-ADC_RES = 4095  # The ADC on the GrovePi-Board has a resolution of 10 bit -> 1024 different digital levels in range of 0-1023
+ADC_REF = 3.3  # Reference voltage of ADC (which is built-in the GrovePi-Board) is 3.3 V
+ADC_RES = 4095  # The ADC on the GrovePi-Board has a resolution of 12 bit -> 4096 different digital levels in range of 0-4095
 
 adc = ADC() # Create ADC Object once
 
@@ -72,7 +69,7 @@ if __name__ == "__main__":
             average_voltage = sum_voltage / N_MEASUREMENTS
 
             # Calculate distance using sensor characteristics, coefficients found from calibration (L5_IR_kalibrieren.py)
-            distance = round(44.593 * average_voltage * average_voltage - 152.73 * average_voltage + 159.38, 2)
+            distance = round(0.5224 * average_voltage * average_voltage - 9.9265 * average_voltage + 78.088, 2)
 
             # Print output and pause
             print(f"voltage: {round(average_voltage,2)} [V] -> distance: {distance} [mm]")
