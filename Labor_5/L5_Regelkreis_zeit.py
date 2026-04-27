@@ -1,10 +1,14 @@
 """-----------------------------------------------------
 ¦    File name: L5_Regelkreis_zeit.py                   ¦
-¦    Version: 1.0                                       ¦
-¦    Author: Jonas Josi                                 ¦
+¦    Version: 1.1                                       ¦
+¦    Authors:                                           ¦
+¦       Jonas Josi                                      ¦
+¦       Matthias Lang                                   ¦
+¦       Christian Hohmann                               ¦
+¦       Joschka Maters                                  ¦
 ¦    Date created: 2024/05/15                           ¦
-¦    Last modified: 2026/04/24                          ¦
-¦    Python Version: 3.7.3                              ¦
+¦    Last modified: 2024/10/06                          ¦
+¦    Python Version: 3.11.2                             ¦
 ------------------------------------------------------"""
 
 # ----------- import external Python module -----------
@@ -19,7 +23,6 @@ import time
 # ----------- global constant -----------
 """ Settings """
 k = 0.001  # *** CHANGE ME *** controller amplification factor k [s/mm]
-N_MEASUREMENTS = 10  # *** CHANGE ME *** number of distance measurements [] over which to average
 VOLTAGE = 12  # *** CHANGE ME *** voltage for DC motor [V] between 0 und 12 V (Voltage from power supply is always 12 V)
 CSV_FILENAME = "Wegdiagramm_Zeit.csv"  # *** CHANGE ME *** file to log data (timestamp and distance)
 CSV_DELIMITER = ";"  # *** CHANGE ME *** Character to separate data fields / cells in the CSV file
