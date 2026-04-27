@@ -38,6 +38,9 @@ IN1 = 17    # IN1 on Motor screw terminal
 IN2 = 18    # IN2 on Motor screw terminal 
 ENA = 12    # ENA - PWM for speed control (Enable A)
 
+# analog-digital-converter parameters
+adc = ADC()
+
 ADC_REF = 3.3  # Reference voltage of ADC (which is built-in the GrovePi-Board) is 3.3 V
 ADC_RES = 4095  # The ADC on the GrovePi-Board has a resolution of 12 bit -> 4096 different digital levels in range of 0-4096
 
